@@ -21,3 +21,5 @@ Migrate(app,db)
 #Blueprint connections
 from blogApp.core.views import core
 app.register_blueprint(core)
+from blogApp.errors import error_pages
+app.register_blueprint(error_pages)
