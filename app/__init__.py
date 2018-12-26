@@ -10,7 +10,7 @@ app = Flask(__name__)
 #Secret key 
 app.config['SECRET_KEY'] = 'mysecretkey'
 
-#SQL Database
+#SQLite Database
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
