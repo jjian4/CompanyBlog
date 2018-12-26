@@ -18,3 +18,6 @@ db = SQLAlchemy(app)
 Migrate(app,db)
 
 
+#Blueprint connections
+from blogApp.core.views import core
+app.register_blueprint(core)
