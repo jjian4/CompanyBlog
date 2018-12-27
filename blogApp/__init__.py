@@ -28,5 +28,8 @@ login_manager.login_view = "users.login"
 #Blueprint connections
 from blogApp.core.views import core
 app.register_blueprint(core)
+from blogApp.users.views import users
+app.register_blueprint(users)
+
 from blogApp.errors import error_pages
 app.register_blueprint(error_pages)
