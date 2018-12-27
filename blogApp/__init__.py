@@ -18,6 +18,13 @@ db = SQLAlchemy(app)
 Migrate(app,db)
 
 
+#Login Manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+#Which view to go to when logging in
+login_manager.login_view = "users.login"
+
+
 #Blueprint connections
 from blogApp.core.views import core
 app.register_blueprint(core)
