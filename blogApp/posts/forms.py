@@ -7,4 +7,4 @@ class NewPostForm(FlaskForm):
     # date/time is handled in Post model definition (models.py)
     title = StringField('Title', validators=[DataRequired()])
     text = TextAreaField('Text', validators=[DataRequired()])
-    submit = SubmitField('BlogPost')
+    submit = SubmitField('Post')

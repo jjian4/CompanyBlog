@@ -23,7 +23,7 @@ def create_post():
         db.session.commit()
         return redirect(url_for('core.index'))
 
-    return render_template('create_post.html',form=form)
+    return render_template('create_post.html',form=form, page_title='New Post')
 
 
 #View post
@@ -31,14 +31,14 @@ def create_post():
 def view_post(post_id):
     # grab the requested blog post by id number or return 404
     post = Post.query.get_or_404(post_id)
-    return render_template('blog_post.html', post=post)
+    return render_template('view_post.html', post=post)
 
 
 #Update post
 @posts.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
 def update(post_id):
-    post = BlogPost.query.get_or_404(post_id)
+    post = Post.query.get_or_404(post_id)
     #Deny access if the author is not current_user
     if post.author != current_user:
         abort(403)
@@ -53,10 +53,10 @@ def update(post_id):
 
     #Get the post info to prefill the update form
     elif request.method == 'GET':
-        form.title.data = blog_post.title
-        form.text.data = blog_post.text
+        form.title.data = post.title
+        form.text.data = post.text
 
-    return render_template('create_post.html', form=form, title='Update')
+    return render_template('create_post.html', form=form, page_title='Update Post')
 
 
 
@@ -64,7 +64,7 @@ def update(post_id):
 @posts.route("/<int:post_id>/delete", methods=['POST'])
 @login_required
 def delete_post(post_id):
-    post = BlogPost.query.get_or_404(post_id)
+    post = Post.query.get_or_404(post_id)
     #Deny access if the author is not current_user
     if post.author != current_user:
         abort(403)
@@ -72,6 +72,11 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
     return redirect(url_for('core.index'))
+
+
+
+
+
 
 
 

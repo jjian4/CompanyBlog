@@ -4,8 +4,10 @@
 
 <div class="jumbotron">
   <div align='center'>
-    <h1 >Welcome to the page for {{current_user.username}}</h1>
-    <p>{{ current_user.email }}</p>
+    <h1 >{{current_user.username}}</h1>
+    <h4>{{ current_user.position }}</h4>
+    <h4>{{ current_user.email }}</h4>
+    <a class="btn btn-info" href="{{ url_for('users.user_posts', username=current_user.username) }}">View My Posts</a>
   </div>
 </div>
 
