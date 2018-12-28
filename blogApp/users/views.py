@@ -47,6 +47,41 @@ def login():
     return render_template('login.html', form=form)
 
 
+#Account (update User info)
+@users.route("/account", methods=['GET', 'POST'])
+@login_required
+def account():
+
+    form = UpdateUserForm()
+
+    #Update current_user's email, username, and position
+    if form.validate_on_submit():
+        current_user.email = form.email.data
+        current_user.username = form.username.data
+        current_user.position = form.position.data
+        db.session.commit()
+        flash('User Account Updated')
+        return redirect(url_for('users.account'))
+
+
+    elif request.method == 'GET':
+        form.email.data = current_user.email
+        form.username.data = current_user.username
+        form.position.data = current_user.position
+
+    return render_template('account.html', form=form)
+
+
+
+#User posts
+@users.route("/posts/<username>")
+def user_posts(username):
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(author=user).order_by(Post.date.desc()).paginate(page=page, per_page=5)
+    return render_template('user_posts.html', user=user, posts=posts)
+
+
 
 
 #Logout
