@@ -2,7 +2,9 @@
 
 {% block content %}
 <div class="container">
-    <h1>{{page_title}}</h1>
+    <div class="jumbotron">
+        <h1>{{page_title}}</h1>
+    </div>
     <form class="form-group" method="POST">
     {{ form.hidden_tag() }}
 
@@ -10,6 +12,12 @@
         {{ form.title.label(class="form-control-label") }}
         {{ form.title(class="form-control form-control-lg ") }}
     </div>
+
+    <div class="form-group">
+        {{ form.department.label(class="form-control-label") }}
+        {{ form.department(class="form-control form-control-lg ") }}
+    </div>
+
     <div class="form-group">
         {{ form.text.label(class="form-control-label") }}
         {{ form.text(class="form-control form-control-lg") }}

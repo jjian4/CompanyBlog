@@ -43,8 +43,14 @@ class User(db.Model, UserMixin):
 
 
 
+
+
+
+
+
 #Post object
 class Post(db.Model):
+
     # Connect to the User table
     users = db.relationship(User)
 
@@ -53,11 +59,13 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     date = db.Column(db.DateTime, nullable=False, default = datetime.utcnow)
     title = db.Column(db.String(128), nullable=False)
+    department = db.Column(db.String(128))
     text = db.Column(db.Text, nullable=False)
 
     #Post initialization
-    def __init__(self, title, text, user_id):
+    def __init__(self, title, department, text, user_id):
         self.title = title
+        self.department = department
         self.text = text
         self.user_id =user_id
 

@@ -16,6 +16,7 @@ def create_post():
     if form.validate_on_submit():
 
         post = Post(title=form.title.data,
+                    department=form.department.data,
                     text=form.text.data,
                     user_id=current_user.id
                     )
@@ -23,7 +24,7 @@ def create_post():
         db.session.commit()
         return redirect(url_for('core.index'))
 
-    return render_template('create_post.html',form=form, page_title='New Post')
+    return render_template('create_post.html',form=form, page_title='Create Post')
 
 
 #View post
