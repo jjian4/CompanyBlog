@@ -42,12 +42,6 @@ class User(db.Model, UserMixin):
         return f"{self.username}: {self.position}"
 
 
-
-
-
-
-
-
 #Post object
 class Post(db.Model):
 

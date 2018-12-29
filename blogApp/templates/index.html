@@ -3,12 +3,11 @@
 
 <!--Home page-->
 <div class="jumbotron">
-	<h1>Home Page</h1>
+	<h1>All Posts</h1>
 	<a class="btn btn-info" href="{{ url_for('posts.create_post') }}">Create Post</a>
 </div>
 
 <div class="container">
-
 	{% for item in posts.items %}
 	<div class="card" >
 

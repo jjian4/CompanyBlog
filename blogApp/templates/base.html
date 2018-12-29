@@ -34,14 +34,10 @@
 						Go to Channel
 					</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="{{ url_for('core.department', department='General') }}">General</a>
-						<a class="dropdown-item" href="#">Production</a>
-						<a class="dropdown-item" href="#">Research & Development</a>
-						<a class="dropdown-item" href="#">Marketing & Sales</a>
-						<a class="dropdown-item" href="#">Human Resource</a>
-						<a class="dropdown-item" href="#">Finance</a>
-						<a class="dropdown-item" href="#">Executive</a>
-
+						<!--Loop through the departments list/dict-->
+						{% for key, value in departments %}
+						<a class="dropdown-item" href="{{ url_for('core.department', department=key) }}">{{key}}</a>
+						{% endfor %}
 
 						<div class="dropdown-divider"></div>
 						<!--TODO: Allow creating new departments-->

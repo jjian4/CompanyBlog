@@ -9,7 +9,7 @@ class NewPostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     text = TextAreaField('Text', validators=[DataRequired()])
 
-    departments = [("General/Announcements", "General/Announcements"),
+    departments = [("General & Announcements", "General & Announcements"),
                 ("Production", "Production"),
                 ("Research & Development", "Research & Development"),
                 ("Marketing & Sales", "Marketing & Sales"),
