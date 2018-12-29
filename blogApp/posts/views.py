@@ -1,8 +1,8 @@
-from flask import render_template,url_for, redirect,request,Blueprint, flash
+from flask import render_template,url_for, redirect,request,Blueprint
 from flask_login import current_user,login_required
 from blogApp import db
-from blogApp.models import Post
-from blogApp.posts.forms import NewPostForm
+from blogApp.models import Post, Reply
+from blogApp.posts.forms import NewPostForm, NewReplyForm
 
 posts = Blueprint('posts',__name__)
 
@@ -22,17 +22,31 @@ def create_post():
                     )
         db.session.add(post)
         db.session.commit()
-        return redirect(url_for('core.index'))
+        return redirect(url_for('core.department', department=form.department.data))
 
     return render_template('create_post.html',form=form, page_title='Create Post')
 
 
-#View post
-@posts.route('/post/<int:post_id>')
+#View post (With option to reply to post)
+@posts.route('/post/<int:post_id>', methods=['GET', 'POST'])
 def view_post(post_id):
-    # grab the requested blog post by id number or return 404
+    # Get the requested blog post by id number or return 404
     post = Post.query.get_or_404(post_id)
-    return render_template('view_post.html', post=post)
+    # Get the replies to the post
+    replies = Reply.query.filter_by(parent_post=post).order_by(Reply.date.desc())
+
+    # Form for adding a new reply
+    form = NewReplyForm()
+    if form.validate_on_submit():
+
+        new_reply = Reply(text=form.text.data,
+                        post_id=post.id,
+                        )
+        db.session.add(new_reply)
+        db.session.commit()
+        return redirect(url_for('posts.view_post', post_id=post_id))
+
+    return render_template('view_post.html', form=form, post=post, replies=replies)
 
 
 #Update post
@@ -50,8 +64,7 @@ def update(post_id):
         post.department = form.department.data
         post.text = form.text.data
         db.session.commit()
-        flash('Post Updated')
-        return redirect(url_for('posts.update', post_id=post.id))
+        return redirect(url_for('core.department', department=post.department))
 
     #Get the post info to prefill the update form
     elif request.method == 'GET':

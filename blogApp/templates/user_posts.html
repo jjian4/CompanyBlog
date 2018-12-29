@@ -6,12 +6,11 @@
     <div align='center'>
         {% if current_user == user %}
         <h1 >My Posts</h1>
-        <h4>{{ user.username }}</h4>
         {% else %}
         <h1 >Posts by {{user.username}}</h1>
-        {% endif %}
         <h4>{{ user.position }}</h4>
         <h4>{{ user.email }}</h4>
+        {% endif %}
 
         {% if current_user == user %}
         <a class="btn btn-info" href="{{ url_for('users.account') }}">My Account</a>

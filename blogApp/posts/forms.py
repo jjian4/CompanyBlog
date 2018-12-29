@@ -20,3 +20,10 @@ class NewPostForm(FlaskForm):
     department = SelectField('Department', choices=departments, validators=[DataRequired()])
 
     submit = SubmitField('Post')
+
+
+#Form for replying to a post
+class NewReplyForm(FlaskForm):
+    # date/time is handled in Reply model definition (models.py)
+    text = StringField('Text', validators=[DataRequired()])
+    submit = SubmitField('Reply')

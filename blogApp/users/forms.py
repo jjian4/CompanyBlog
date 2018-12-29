@@ -46,13 +46,13 @@ class UpdateUserForm(FlaskForm):
     position = StringField('Position', validators=[DataRequired()])
     submit = SubmitField('Update')
 
-    #Check if new email and username are taken already
+    #Check if new email and username are taken by someone other than self
     def check_email(self, field):
-        if User.query.filter_by(email=field.data).first():
-            raise ValidationError('Your email has been registered already!')
+        if len(User.query.filter_by(email=field.data).all()) > 1:
+            raise ValidationError('Email already taken.')
     def check_username(self, field):
-        if User.query.filter_by(username=field.data).first():
-            raise ValidationError('Sorry, that username is taken!')
+        if len(User.query.filter_by(username=field.data).all()) > 1:
+            raise ValidationError('Username already taken.')
 
 
 

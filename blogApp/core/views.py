@@ -18,7 +18,7 @@ def department(department):
 	#To display and paginate the posts
 	page = request.args.get('page', 1, type=int)
 
-	department_posts = Post.query.filter_by(department=department).order_by(Post.date.desc()).paginate(page=page, per_page=6)
+	department_posts = Post.query.filter_by(department=department).order_by(Post.date.desc()).paginate(page=page, per_page=3)
 
 	title = department
 	return render_template('department.html', department_posts=department_posts, title=title)

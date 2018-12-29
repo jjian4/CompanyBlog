@@ -1,4 +1,4 @@
-from flask import render_template, url_for, redirect, request, Blueprint, flash
+from flask import render_template, url_for, redirect, request, Blueprint
 from flask_login import current_user, login_user, login_required, logout_user
 from blogApp import db
 from blogApp.models import User, Post
@@ -13,6 +13,8 @@ def register():
     form = RegistrationForm()
 
     if form.validate_on_submit():
+        form.check_email(form.email)
+        form.check_username(form.username)
         user = User(email=form.email.data,
                     username=form.username.data,
                     position=form.position.data,
@@ -33,7 +35,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
 
         # Check that the password is right
-        if user.check_password(form.password.data) and user is not None:
+        if user is not None and user.check_password(form.password.data):
             login_user(user)
 
             # 'next' is saved as the page to be visited after login
@@ -43,6 +45,8 @@ def login():
                 next = url_for('core.index')
 
             return redirect(next)
+        else:
+            redirect(url_for('users.login'))
 
     return render_template('login.html', form=form)
 
@@ -56,11 +60,14 @@ def account():
 
     #Update current_user's email, username, and position
     if form.validate_on_submit():
+
+        form.check_email(form.email)
+        form.check_username(form.username)
+        
         current_user.email = form.email.data
         current_user.username = form.username.data
         current_user.position = form.position.data
         db.session.commit()
-        flash('User Account Updated')
         return redirect(url_for('users.account'))
 
 
