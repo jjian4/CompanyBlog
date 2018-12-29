@@ -1,7 +1,7 @@
 from flask import render_template,url_for, redirect,request,Blueprint
 from flask_login import current_user,login_required
 from blogApp import db
-from blogApp.models import Post, Reply
+from blogApp.models import User, Post, Reply
 from blogApp.posts.forms import NewPostForm, NewReplyForm
 
 posts = Blueprint('posts',__name__)

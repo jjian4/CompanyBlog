@@ -28,6 +28,9 @@ class User(db.Model, UserMixin):
     #Connect Post objects to Users
     posts = db.relationship('Post', backref='author', lazy=True)
 
+    #Connect Reply objects to Users
+    replies = db.relationship('Reply', backref='replier', lazy=True)
+
     #User initialization
     def __init__(self, email, username, position, password):
         self.email = email
@@ -87,6 +90,9 @@ class Reply(db.Model):
 
     #Set Post id as foreign key, Every Reply must have a Post so nullable=False
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
+
+    #Set User id as foreign key, Every Reply must have a User so nullable=False
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     date = db.Column(db.DateTime, nullable=False, default = datetime.utcnow)
     text = db.Column(db.Text, nullable=False)

@@ -2,67 +2,84 @@
 
 {% block content %}
 <div class="jumbotron">
-  <h2>Title: {{ post.title }}</h2>
-  <h4>Author: <a href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }} ({{post.author.position}})</a></h4>
-  <h4>Department: <a href="{{ url_for('core.department', department=post.department) }}">{{ post.department }}</a></h4>
-  <h4>Published: {{ post.date.strftime('%-I:%M %p (%a) %b %d, %Y') }}</h4>
+    <h2>Title: {{ post.title }}</h2>
+    <h4>Author: <a href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }} ({{post.author.position}})</a></h4>
+    <h4>Department: <a href="{{ url_for('core.department', department=post.department) }}">{{ post.department }}</a></h4>
+    <h4>Published: {{ post.date.strftime('%-I:%M %p (%a) %b %d, %Y') }}</h4>
 
-  <br>
+    <br>
 
-  <h3>"{{ post.text }}"</h3>
+    <h3>"{{ post.text }}"</h3>
 
-  {% if post.author == current_user %}
-  <div>
-    <a class="btn btn-secondary" href="{{ url_for('posts.update', post_id=post.id) }}">Update</a>
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete_modal">Delete</button>
-  </div>
-  {% endif %}
+    {% if post.author == current_user %}
+    <div style="float: right">
+        <a class="btn btn-secondary" href="{{ url_for('posts.update', post_id=post.id) }}">Update</a>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete_modal">Delete</button>
+    </div>
+    {% endif %}
 
 </div>
 
 <!-- Delete post confirmation modal (getbootstrap.com/docs/4.1/components/modal/) -->
 <div class="modal" tabindex="-1" role="dialog" id="delete_modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Delete Post confirmation Modal</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Are you sure you want to delete the post?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Post confirmation Modal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the post?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 
-        <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
-          <input class="btn btn-danger" type="submit" value="Delete">
-        </form>
-      </div>
+                <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
+                    <input class="btn btn-danger" type="submit" value="Delete">
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
-<!--TODO: Replies-->
-<h3>Replies:</h3>
-  <form class="form-group" method="POST">
-  {{ form.hidden_tag() }}
+<!--Reply form and view other replies-->
+<div class="container">
+    <h3>Replies:</h3>
+    <!--Reply Form-->
+    <form class="form-group" method="POST">
+        {{ form.hidden_tag() }}
 
-  <div class="input-group">
-      {{ form.text(class="form-control", placeholder="Reply") }}
-      <span class="input-group-btn">
-        {{ form.submit(class="btn btn-info", style="margin-left:8px") }}
-      </span>
-  </div>
+        <div class="input-group">
+            {{ form.text(class="form-control", placeholder="Reply") }}
+            <span class="input-group-btn">
+            {{ form.submit(class="btn btn-info", style="margin-left:8px") }}
+          </span>
+        </div>
+    </form>
 
-  </form>
+    <!--View other replies-->
+    {% for item in replies %}
+    <div class="row">
+        <div class="col-md-3">
+
+            <h4><a href="{{ url_for('users.user_posts', username=item.replier.username) }}">{{item.replier.username}} ({{item.replier.position}})</a></h4>
+            <p class="text-muted">
+                {{ item.date.strftime('%-I:%M %p (%a) %b %d, %Y') }}
+            </p>
+        </div>
+        <div class="col-md-9" style="border-left: 1px solid #ccc;">
+            <h5>{{item.text}}</h5>
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+</div>
 
 
-{% for item in replies %}
-<p>{{item.text}}</p>
-{% endfor %}
+
 
 
 
