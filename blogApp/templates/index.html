@@ -4,7 +4,21 @@
 <!--Home page-->
 <div class="jumbotron">
 	<h1>All Posts</h1>
-	<a class="btn btn-info" href="{{ url_for('posts.create_post') }}">Create Post</a>
+
+	<!--Page navigation-->
+	<nav aria-label="Page navigation example" style="float: right;">
+		<ul class="pagination justify-content-center">
+			{% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+			{% if posts.page == page_num %}
+			<li class="page-item disabled">
+				<a class="page-link" href="{{ url_for('core.index', page=page_num) }}">{{ page_num }}</a></li>
+			</li>
+			{% else %}
+			<li class="page-item"><a class="page-link" href="{{ url_for('core.index', page=page_num) }}">{{ page_num }}</a></li>
+			{% endif %}
+			{% endfor %}
+		</ul>
+	</nav>
 </div>
 
 <div class="container">
@@ -14,24 +28,26 @@
 		<div class="card-body row">
 			<div class="col-md-5">
 				<h3><a class="card-title" href="  {{ url_for('posts.view_post', post_id=item.id) }}">{{ item.title }}</a></h3>
-				<a href="{{ url_for('users.user_posts', username=item.author.username) }}">{{ item.author.username }} ({{item.author.position}}), {{item.department}}</a>
+				<h5>Author: <a href="{{ url_for('users.user_posts', username=item.author.username) }}">{{ item.author.username }} ({{item.author.position}})</a></h5>
+				<h5>Department: {{item.department}}</h5>
 				<p class="text-muted">
 				    {{ item.date.strftime(' %B %d, %Y') }}<br>
 				    {{ item.date.strftime('%A %I:%M %p') }}
 				</p>
 
-				<!--Don't show the entire text if it is too long-->
-				{% if item.text|length < 100 %}
-				<p class="card-text">{{ item.text }}</p>
-				{% else %}
-				<p class="card-text">{{ item.text[:100] }}...</p>
-				{% endif %}
-
-
 				<a href="{{ url_for('posts.view_post', post_id=item.id) }}" class="btn btn-primary">Read Post</a>
 			</div>
 
 			<div class="col-md-7">
+				<!--Don't show the entire text if it is too long-->
+				{% if item.text|length < 100 %}
+				<h4 class="card-text">"{{ item.text }}"</h4>
+				{% else %}
+				<h4 class="card-text">"{{ item.text[:100] }}..."</h4>
+				{% endif %}
+
+				<br>
+
 				Name (Position), Dec 29, 12:34 PM:
 				<p>Reply reply reply reply reply reply reply reply reply</p>
 
@@ -45,23 +61,6 @@
 	{% endfor %}
 </div>
 
-<br>
-
-
-<!--Page navigation-->
-<nav aria-label="Page navigation example">
-	<ul class="pagination justify-content-center">
-		{% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-		{% if posts.page == page_num %}
-		<li class="page-item disabled">
-			<a class="page-link" href="{{ url_for('core.index', page=page_num) }}">{{ page_num }}</a></li>
-		</li>
-		{% else %}
-		<li class="page-item"><a class="page-link" href="{{ url_for('core.index', page=page_num) }}">{{ page_num }}</a></li>
-		{% endif %}
-		{% endfor %}
-	</ul>
-</nav>
 
 
 {% endblock %}

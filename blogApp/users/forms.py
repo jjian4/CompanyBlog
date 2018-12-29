@@ -20,7 +20,7 @@ class LoginForm(FlaskForm):
 #For registration page
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[Email(), DataRequired()])
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Full Name', validators=[DataRequired()])
     position = StringField('Position', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired(), EqualTo('pass_confirm', message='Passwords do not match.')])
     pass_confirm = PasswordField('Confirm password', validators=[DataRequired()])
@@ -42,7 +42,7 @@ class RegistrationForm(FlaskForm):
 #For User updating page
 class UpdateUserForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(),Email()])
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Full Name', validators=[DataRequired()])
     position = StringField('Position', validators=[DataRequired()])
     submit = SubmitField('Update')
 

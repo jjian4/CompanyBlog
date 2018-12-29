@@ -47,6 +47,7 @@ def update(post_id):
     form = NewPostForm()
     if form.validate_on_submit():
         post.title = form.title.data
+        post.department = form.department.data
         post.text = form.text.data
         db.session.commit()
         flash('Post Updated')
@@ -55,6 +56,7 @@ def update(post_id):
     #Get the post info to prefill the update form
     elif request.method == 'GET':
         form.title.data = post.title
+        form.department.data = post.department
         form.text.data = post.text
 
     return render_template('create_post.html', form=form, page_title='Update Post')

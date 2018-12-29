@@ -3,6 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from blogApp.posts.forms import NewPostForm
 
 app = Flask(__name__)
 
@@ -23,6 +24,15 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 #Which view to go to when logging in
 login_manager.login_view = "users.login"
+
+
+
+#Navbar channel options - display departments names from NewPostForm in every template
+@app.context_processor
+def inject_test():
+	departments = NewPostForm.departments
+	return dict(departments=departments)
+
 
 
 #Blueprint connections

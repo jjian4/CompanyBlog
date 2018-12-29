@@ -4,11 +4,30 @@
 <!--Department page-->
 <div class="jumbotron">
 	<h1>{{title}}</h1>
-	<a class="btn btn-info" href="{{ url_for('posts.create_post') }}">Create Post</a>
+
+	<!--Page navigation-->
+	<nav aria-label="Page navigation example" style="float: right;">
+		<ul class="pagination justify-content-center">
+			{% for page_num in department_posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+			{% if department_posts.page == page_num %}
+			<li class="page-item disabled">
+				<a class="page-link" href="{{ url_for('core.index', page=page_num) }}">{{ page_num }}</a></li>
+			</li>
+			{% else %}
+			<li class="page-item"><a class="page-link" href="{{ url_for('core.index', page=page_num) }}">{{ page_num }}</a></li>
+			{% endif %}
+			{% endfor %}
+		</ul>
+	</nav>
 </div>
 
 <div class="container">
+	
+	<!--If there are no posts for this department-->
+	{% if department_posts.items|length == 0 %}
+	<h3>... No posts in {{title}} Channel ...</h3>
 
+	{% else %}
 	{% for item in department_posts.items %}
 	<div class="card" >
 
@@ -44,25 +63,8 @@
 		</div>
 	</div>
 	{% endfor %}
+	{% endif %}
 </div>
-
-<br>
-
-
-<!--Page navigation-->
-<nav aria-label="Page navigation example">
-	<ul class="pagination justify-content-center">
-		{% for page_num in department_posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-		{% if department_posts.page == page_num %}
-		<li class="page-item disabled">
-			<a class="page-link" href="{{ url_for('core.index', page=page_num) }}">{{ page_num }}</a></li>
-		</li>
-		{% else %}
-		<li class="page-item"><a class="page-link" href="{{ url_for('core.index', page=page_num) }}">{{ page_num }}</a></li>
-		{% endif %}
-		{% endfor %}
-	</ul>
-</nav>
 
 
 {% endblock %}

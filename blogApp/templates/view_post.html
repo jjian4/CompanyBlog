@@ -3,8 +3,8 @@
 {% block content %}
 <div class="jumbotron">
     <h1>{{ post.title }}</h1>
-    <h2>Intended for: {{ post.department }}</h2>
-    <h3>Written by: {{ post.author.username }}</h3>
+    <h3>Department: {{ post.department }}</h3>
+    <h3>Author: {{ post.author.username }} ({{post.author.position}})</h3>
     <h3>Published: {{ post.date.strftime('%B %d, %Y') }}</h3>
     <p>{{ post.text }}</p>
 
