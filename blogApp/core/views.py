@@ -1,10 +1,11 @@
-from flask import render_template,request,Blueprint
+from flask import render_template, request, redirect, url_for, Blueprint
 #To display posts and replies in index.html and department.html
 from blogApp.models import Post, Reply
+#For donation option on the About page
+import stripe
 
 
 core = Blueprint('core',__name__)
-
 
 #Website home Page
 @core.route('/')
@@ -29,7 +30,52 @@ def department(department):
 	return render_template('department.html', title=title, department_posts=department_posts, replies=replies)
 
 
+
+#Stripe keys
+public_key = "pk_test_TYooMQauvdEDq54NiTphI7jx"
+stripe.api_key = "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
+
 #About page
 @core.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('about.html', public_key=public_key)
+
+#Donation in the About page using Stripe
+@core.route('/payment', methods=['POST'])
+def payment():
+	# Amount in cents
+	amount = 2500
+
+	customer = stripe.Customer.create(
+	    email='customer@example.com',
+	    source=request.form['stripeToken']
+	)
+
+	charge = stripe.Charge.create(
+	    customer=customer.id,
+	    amount=amount,
+	    currency='usd',
+	    description='Flask Charge'
+	)
+
+	return redirect(url_for('core.confirm_payment'))
+
+
+
+
+@core.route('/confirm_payment')
+def confirm_payment():
+	return render_template('confirm_payment.html')
+
+
+
+
+
+
+
+
+
+
+
+
+

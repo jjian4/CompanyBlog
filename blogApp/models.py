@@ -2,7 +2,7 @@ from blogApp import db, login_manager
 #To generate password hash and check password
 from werkzeug.security import generate_password_hash,check_password_hash
 #For authentication
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 #To get current date/time for Post objects
 from datetime import datetime
 

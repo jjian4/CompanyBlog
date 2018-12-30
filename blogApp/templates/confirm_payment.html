@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<!--About page-->
+<!--Confirm payment page-->
 <div class="jumbotron">
 	<h1>About this Site</h1>
 	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -17,20 +17,8 @@
 	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-
-	<div align="right">
-		<h2>Donate to our website?</h2>
-		<form action="{{url_for('core.payment')}}" method="POST">
-		  	<script
-			    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-			    data-key={{public_key}}
-			    data-amount= 2500
-			    data-name="Company Blog"
-			    data-description="Donation"
-			    data-locale="auto"
-			    data-zip-code="true">
-		  	</script>
-		</form>
+	<div align="center">
+		<h1>Thank You for your donation!</h1>
 	</div>
 
 </div>
