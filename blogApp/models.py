@@ -5,8 +5,6 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
 #To get current date/time for Post objects
 from datetime import datetime
-#To save current_user.id as user_id in Reply
-from flask_login import current_user
 
 
 #Use login_manager to check authentication in templates

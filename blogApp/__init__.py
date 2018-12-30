@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from blogApp.posts.forms import NewPostForm
 
 app = Flask(__name__)
@@ -29,9 +29,14 @@ login_manager.login_view = "users.login"
 
 #Navbar channel options - display departments names from NewPostForm in every template
 @app.context_processor
-def inject_test():
+def inject_departments():
 	departments = NewPostForm.departments
 	return dict(departments=departments)
+
+
+@app.context_processor
+def inject_current_user():
+	return dict(current_user=current_user)
 
 
 

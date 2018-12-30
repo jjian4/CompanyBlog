@@ -42,7 +42,7 @@
 				    {{ item.date.strftime('%A %-I:%M %p') }}
 				</p>
 
-				<a href="{{ url_for('posts.view_post', post_id=item.id) }}" class="btn btn-primary">Read More</a>
+				<a href="{{ url_for('posts.view_post', post_id=item.id) }}" class="btn btn-primary btn-sm">Read More</a>
 			</div>
 
 			<div class="col-md-7">
@@ -53,15 +53,26 @@
 				<h4 class="card-text">"{{ item.text[:100] }}..."</h4>
 				{% endif %}
 
-				<br>
+				<hr>
 
-				Name (Position), Dec 29, 12:34 PM:
-				<p>Reply reply reply reply reply reply reply reply reply</p>
+				{% set count = [0] %}
+				{% for reply in replies %}
+					{% if count[0] < 2 and reply.parent_post.id == item.id %}
+						<p>
+							<a href="{{ url_for('users.user_posts', username=reply.replier.username) }}"><b>{{reply.replier.username}} ({{reply.replier.position}})</b></a> -
+							{{ reply.date.strftime('%b %d, %Y (%a) %-I:%M %p') }}
 
-				Name (Position), Dec 30, 3:11 PM:
-				<p>Reply reply reply reply reply Reply reply reply reply reply Reply reply reply reply reply</p>
+							<br>
+							<b>{{reply.text}}</b>
+						</p>
+						<!--increment count by 1, allow only 2 replies to display-->
+						{% if count.append(count.pop() + 1) %}{% endif %} 
+					{% endif %}
+				{% endfor %}
 
-				<p>...</p>
+				<div align="right">
+					<a href="{{ url_for('posts.view_post', post_id=item.id) }}">... More replies</a>
+				</div>
 			</div>
 		</div>
 	</div>

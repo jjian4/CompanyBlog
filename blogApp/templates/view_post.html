@@ -5,7 +5,7 @@
     <h2>Title: {{ post.title }}</h2>
     <h4>Author: <a href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }} ({{post.author.position}})</a></h4>
     <h4>Department: <a href="{{ url_for('core.department', department=post.department) }}">{{ post.department }}</a></h4>
-    <h4>Published: {{ post.date.strftime('%-I:%M %p (%a) %b %d, %Y') }}</h4>
+    <h4>Published: {{ post.date.strftime('%b %d, %Y (%a) %-I:%M %p') }}</h4>
 
     <br>
 
@@ -55,7 +55,7 @@
         <div class="input-group">
             {{ form.text(class="form-control", placeholder="Reply") }}
             <span class="input-group-btn">
-            {{ form.submit(class="btn btn-info", style="margin-left:8px") }}
+            {{ form.submit(class="btn btn-primary", style="margin-left:8px") }}
           </span>
         </div>
     </form>
@@ -67,7 +67,7 @@
 
             <h4><a href="{{ url_for('users.user_posts', username=item.replier.username) }}">{{item.replier.username}} ({{item.replier.position}})</a></h4>
             <p class="text-muted">
-                {{ item.date.strftime('%-I:%M %p (%a) %b %d, %Y') }}
+                {{ item.date.strftime('%b %d, %Y (%a) %-I:%M %p') }}
             </p>
         </div>
         <div class="col-md-9" style="border-left: 1px solid #ccc;">

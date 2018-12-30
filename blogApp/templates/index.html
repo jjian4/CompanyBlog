@@ -3,7 +3,7 @@
 
 <!--Home page-->
 <div class="jumbotron">
-	<h1>All Posts</h1>
+	<h1>Home (All Posts)</h1>
 
 	<!--Page navigation-->
 	<nav aria-label="Page navigation example" style="float: right;">
@@ -26,7 +26,7 @@
 	<div class="card " >
 
 		<div class="card-body row">
-			<div class="col-md-5">
+			<div class="col-md-4">
 				<h3><a class="card-title" href="  {{ url_for('posts.view_post', post_id=item.id) }}">{{ item.title }}</a></h3>
 				<h5>Author: <a href="{{ url_for('users.user_posts', username=item.author.username) }}">{{ item.author.username }} ({{item.author.position}})</a></h5>
 				{% set dep = item.department %}
@@ -36,10 +36,10 @@
 				    {{ item.date.strftime('%A %-I:%M %p') }}
 				</p>
 
-				<a href="{{ url_for('posts.view_post', post_id=item.id) }}" class="btn btn-primary">Read More</a>
+				<a href="{{ url_for('posts.view_post', post_id=item.id) }}" class="btn btn-primary btn-sm">Read More</a>
 			</div>
 
-			<div class="col-md-7">
+			<div class="col-md-8">
 				<!--Don't show the entire text if it is too long-->
 				{% if item.text|length < 100 %}
 				<h4 class="card-text">"{{ item.text }}"</h4>
@@ -47,18 +47,31 @@
 				<h4 class="card-text">"{{ item.text[:100] }}..."</h4>
 				{% endif %}
 
-				<br>
+				<hr>
 
-				Name (Position), Dec 29, 12:34 PM:
-				<p>Reply reply reply reply reply reply reply reply reply</p>
+				{% set count = [0] %}
+				{% for reply in replies %}
+					{% if count[0] < 2 and reply.parent_post.id == item.id %}
+						<p>
+							<a href="{{ url_for('users.user_posts', username=reply.replier.username) }}"><b>{{reply.replier.username}} ({{reply.replier.position}})</b></a> -
+							{{ reply.date.strftime('%b %d, %Y (%a) %-I:%M %p') }}
 
-				Name (Position), Dec 30, 3:11 PM:
-				<p>Reply reply reply reply reply Reply reply reply reply reply Reply reply reply reply reply</p>
+							<br>
+							<b>{{reply.text}}</b>
+						</p>
+						<!--increment count by 1, allow only 2 replies to display-->
+						{% if count.append(count.pop() + 1) %}{% endif %} 
+					{% endif %}
+				{% endfor %}
 
-				<p>...</p>
+				<div align="right">
+					<a href="{{ url_for('posts.view_post', post_id=item.id) }}">... More replies</a>
+				</div>
+
 			</div>
 		</div>
 	</div>
+	<br>
 	{% endfor %}
 </div>
 

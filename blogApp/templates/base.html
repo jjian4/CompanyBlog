@@ -44,10 +44,14 @@
 			<ul class="navbar-nav ml-auto">
 				{% if current_user.is_authenticated %}
 				<li class="nav-item">
-					<a class="nav-link" href="{{ url_for('users.account') }}">Account</a>
+					<div style="margin-right: 8px; margin-top: 3px;">
+						<a class="btn btn-secondary btn-sm" href="{{ url_for('users.account') }}"> {{current_user.username}}</a>
+					</div>
 				</li>
 				<li class="nav-item">
-					<a class="btn btn-primary" href="{{ url_for('posts.create_post') }}">Create Post</a>
+					<div align="right" style="margin-right: 8px; margin-top: 3px;">
+						<a class="btn btn-primary btn-sm" href="{{ url_for('posts.create_post') }}">Create Post</a>
+					</div>
 				</li>
 				{% else %}
 				<li class="nav-item">
